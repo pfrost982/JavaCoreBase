@@ -4,15 +4,14 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 public class MainClass {
-    public static int SIZE = 3;
+    public static int SIZE = 5;
     public static int DOTS_TO_WIN = 3;
     public static final char DOT_EMPTY = '•';
     public static final char DOT_X = 'X';
     public static final char DOT_O = 'O';
     public static char[][] map;
+
     //переменные для findNextPattern()
-    public static char[] chainPatternFind;
-    public static int lengthFind;
     public static int iFind = 0, jFind = 0;
     public static int iDirectFind, jDirectFind;
 
@@ -21,6 +20,8 @@ public class MainClass {
     public static Scanner sc = new Scanner(System.in);
     public static Random rand = new Random();
     public static void main(String[] args) {
+        SIZE = getInt("Введите размер поля: ");
+        DOTS_TO_WIN = getInt("Введите количество символов для победы: ");
         initMap();
         printMap();
         while (true) {
@@ -51,7 +52,6 @@ public class MainClass {
     }
 
     public static void initMap() {
-        chainPatternFind =new char[DOTS_TO_WIN];
         map = new char[SIZE][SIZE];
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
@@ -61,7 +61,7 @@ public class MainClass {
     }
 
     public static void printMap() {
-        System.out.print("Q ");
+        System.out.print("☺ ");
         for (int i = 1; i <= SIZE; i++) {
             System.out.print(i + " ");
         }
@@ -79,13 +79,37 @@ public class MainClass {
     public static void humanTurn() {
         int i, j;
         do {
-            System.out.println("Введите строку: ");
-            i = sc.nextInt() - 1;
-            System.out.println("Введите столбец: ");
-            j = sc.nextInt() - 1;
+            i = getInt("Введите строку: ") - 1;
+            j = getInt("Введите столбец: ") - 1;
         } while (!isCellValid(i, j));
         map[i][j] = DOT_X;
     }
+
+    public static int getInt(String s) {
+        int result = SIZE + 1;
+        do {
+            try {
+                System.out.println(s);
+                int value = sc.nextInt();
+                if (value < 1 | value > SIZE) {
+                    System.out.println("Число вне диапазона, введите еще раз");
+                    continue;
+                }
+                result = value;
+            } catch (NumberFormatException e) {
+                System.out.println("Это не число, введите еще раз");
+            }
+        } while (result == SIZE + 1);
+        return result;
+
+    }
+
+    public static boolean isCellValid(int i, int j) {
+        if (i < 0 || i >= SIZE || j < 0 || j >= SIZE) return false;
+        if (map[i][j] == DOT_EMPTY) return true;
+        return false;
+    }
+
     public static void aiTurn() {
         if (findWinTurn()) return;
         else if (blockHumanWin()) return;
@@ -93,13 +117,11 @@ public class MainClass {
     }
 
     public static boolean findWinTurn() {
-        lengthFind = DOTS_TO_WIN;
-        for (int i = 0; i < lengthFind; i++) {
-            for (int l = 0; l < lengthFind; l++) chainPatternFind[l] = DOT_O;
-            chainPatternFind[i] = DOT_EMPTY;
-            iFind = 0;
-            jFind = 0;
-            if (findNextPattern()) {
+        char[] pattern = new char[DOTS_TO_WIN];
+        for (int i = 0; i < pattern.length; i++) {//формируем все возможные предпобедные паттерны
+            for (int l = 0; l < pattern.length; l++) pattern[l] = DOT_O;
+            pattern[i] = DOT_EMPTY;
+            if (findNextPattern(0, 0, pattern)) {
                 map[iFind + iDirectFind * i][jFind + jDirectFind * i] = DOT_O;
                 System.out.println("обнаружена победа кординанаты (" + (iFind + iDirectFind * i + 1) + ", " + (jFind + jDirectFind * i + 1) + ")");
                 System.out.println("Компьютер походил в точку (" + (iFind + iDirectFind * i + 1) + ", " + (jFind + jDirectFind * i + 1) + ")");
@@ -110,13 +132,11 @@ public class MainClass {
     }
 
     public static boolean blockHumanWin() {
-        lengthFind = DOTS_TO_WIN;
-        for (int i = 0; i < lengthFind; i++) {
-            for (int l = 0; l < lengthFind; l++) chainPatternFind[l] = DOT_X;
-            chainPatternFind[i] = DOT_EMPTY;
-            iFind = 0;
-            jFind = 0;
-            if (findNextPattern()) {
+        char[] pattern = new char[DOTS_TO_WIN];
+        for (int i = 0; i < pattern.length; i++) {//формируем все возможные предпобедные паттерны
+            for (int l = 0; l < pattern.length; l++) pattern[l] = DOT_X;
+            pattern[i] = DOT_EMPTY;
+            if (findNextPattern(0, 0, pattern)) {
                 map[iFind + iDirectFind * i][jFind + jDirectFind * i] = DOT_O;
                 System.out.println("заблокирована победа кординанаты (" + (iFind + iDirectFind * i + 1) + ", " + (jFind + jDirectFind * i + 1) + ")");
                 System.out.println("Компьютер походил в точку (" + (iFind + iDirectFind * i + 1) + ", " + (jFind + jDirectFind * i + 1) + ")");
@@ -135,39 +155,36 @@ public class MainClass {
         map[i][j] = DOT_O;
         System.out.println("Компьютер походил в точку (" + (i + 1) + ", " + (j + 1) + ")");
     }
-
-    public static boolean isCellValid(int i, int j) {
-        if (i < 0 || i >= SIZE || j < 0 || j >= SIZE) return false;
-        if (map[i][j] == DOT_EMPTY) return true;
-        return false;
-    }
     public static boolean isMapFull() {
         if ((numOfTurnsHuman + numOfTurnsAI) >= (SIZE * SIZE)) return true;
         else return false;
     }
     public static boolean checkWin(char symb) {
-        lengthFind = DOTS_TO_WIN;
-        iFind = 0;
-        jFind = 0;
-        for (int i = 0; i < lengthFind; i++) chainPatternFind[i] = symb;
-        if (findNextPattern()) return true;
+        char[] pattern = new char[DOTS_TO_WIN];
+        for (int i = 0; i < pattern.length; i++) pattern[i] = symb; //формируем победный паттерн
+        if (findNextPattern(0, 0, pattern)) return true;
         else return false;
     }
 
-    public static boolean findNextPattern() {
-        // ищет следующую строку паттерн chainPatternFind начиная с позиции (iFind, jFind)
-        // если находит возвращает true начало цепочки будет в позиции (iFind, jFind) направление в iDirectFind и jDirectFind
-        int[][] directions = { {-1, 1}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
-        for (iFind = 0; iFind < SIZE; iFind++) {
-            for (jFind = 0; jFind < SIZE; jFind++) {
+    public static boolean findNextPattern(int iStart, int jStart, char[] pattern) {
+        // ищет следующую строку pattern в матрице поля начиная с позиции iStart, jStart(предусмотрено на будующее чтобы продолжать поиск)
+        // если находит возвращает true начало цепочки будет в позиции iFind, jFind направление в iDirectFind и jDirectFind
+        int i = iStart;
+        int j = jStart;
+        int[][] directions = { {-1, 1}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};//8 направлений
+        for (; i < SIZE; i++) {
+            if (j >= SIZE) j = 0;
+            for (; j < SIZE; j++) {
                 int iDirect, jDirect;
                 for (int d = 0; d < 8; d++) {
                     iDirect = directions[d][0];
                     jDirect = directions[d][1];
-                    if (patternDirectCompare(iFind, jFind, iDirect, jDirect, chainPatternFind, lengthFind)) {
-                        System.out.println("найдена цепочка " + Arrays.toString(chainPatternFind) + " в точке (" + (iFind + 1) + ", " + (jFind + 1) + ")  направление " + iDirect + ", " + jDirect);
+                    if (patternDirectCompare(i, j, iDirect, jDirect, pattern)) {
+/*для отладки*/         System.out.println("найдена цепочка " + Arrays.toString(pattern) + " в точке (" + (i + 1) + ", " + (j + 1) + ")  направление " + iDirect + ", " + jDirect);
                         iDirectFind = iDirect;
                         jDirectFind = jDirect;
+                        iFind = i;
+                        jFind = j;
                         return true;
                     }
                 }
@@ -176,9 +193,11 @@ public class MainClass {
         return false;
     }
 
-    public static boolean patternDirectCompare(int i, int j, int iDirect, int jDirect, char[] pattern, int patternLength) {
+    public static boolean patternDirectCompare(int i, int j, int iDirect, int jDirect, char[] pattern) {
+        //сравнивает переданный pattern с цепочкой символов в матрице поля, начинающейся с позиции i, j в направлении iDirect, jDirect
+        //в случае совпадения возвращает true
         boolean DotValid;
-        for (int k = 0; k < patternLength; k++) {
+        for (int k = 0; k < pattern.length; k++) {
 
             DotValid = i >= 0 & i < SIZE & j >= 0 & j < SIZE;
 
