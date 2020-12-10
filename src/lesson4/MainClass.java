@@ -1,9 +1,9 @@
 package lesson4;
 
-import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
+
 public class MainClass {
     public static int SIZE = 5;
     public static int DOTS_TO_WIN = 3;
@@ -62,7 +62,7 @@ public class MainClass {
     }
 
     public static void printMap() {
-        System.out.print("☺ ");
+        System.out.print("♥ ");
         for (int i = 1; i <= SIZE; i++) {
             System.out.print(i + " ");
         }
@@ -108,8 +108,8 @@ public class MainClass {
 
     public static void aiTurn() {
 
-        for (int length = DOTS_TO_WIN; length >=0 ; length--) {
-            if (findTurn(DOT_O, length)) return;
+        for (int length = DOTS_TO_WIN; length >=0 ; length--) {//Ищется максимальная возможная последовательность своих О, чтобы усилиться
+            if (findTurn(DOT_O, length)) return;               //если нет, то возможность испортить максимальную последовательность X
             if (findTurn(DOT_X, length)) return;
         }
         System.out.println("Случайный ход");
@@ -120,16 +120,15 @@ public class MainClass {
         char[] fullPattern = new char[DOTS_TO_WIN];
 
         char[] pattern = new char[lengthOfPattern];
-        for (int i = 0; i < pattern.length; i++) {
+        for (int i = 0; i < pattern.length; i++) {              //перебор возможных паттернов длинной lengthOfPattern
             for (int l = 0; l < pattern.length; l++) pattern[l] = symb;
             pattern[i] = DOT_EMPTY;
 
             for (int fullPatternOffset = 0; fullPatternOffset <= DOTS_TO_WIN - lengthOfPattern; fullPatternOffset++) {
-
+                                            //построение и перебор паттернов длинной DOTS_TO_WIN на основе паттерна длинной lengthOfPattern
                 for (int l = 0; l < DOTS_TO_WIN; l++) fullPattern[l] = DOT_EMPTY;
                 for (int l = 0; l < pattern.length; l++) fullPattern[l + fullPatternOffset] = pattern[l];
-//                System.out.println(Arrays.toString(fullPattern));
-//                System.out.println();
+//                System.out.println(Arrays.toString(fullPattern)); //просмотр построенных паттернов
                 if (findNextPattern(0, 0, fullPattern)) {
                     map[iFind + iDirectFind * i][jFind + jDirectFind * i] = DOT_O;
                     System.out.println("Компьютер походил в точку (" + (iFind + iDirectFind * i + 1) + ", " + (jFind + jDirectFind * i + 1) + ")");
