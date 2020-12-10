@@ -107,38 +107,35 @@ public class MainClass {
     }
 
     public static void aiTurn() {
-        if (findWinTurn()) return;
-        else if (blockHumanWin()) return;
-        else randomTurn();
+
+        for (int length = DOTS_TO_WIN; length >=0 ; length--) {
+            if (findTurn(DOT_O, length)) return;
+            if (findTurn(DOT_X, length)) return;
+        }
+        System.out.println("Неведомая хуйня");
+        randomTurn();
     }
 
-    public static boolean findWinTurn() {
-        char[] pattern = new char[DOTS_TO_WIN];
-        for (int i = 0; i < pattern.length; i++) {//формируем все возможные предпобедные паттерны
-            for (int l = 0; l < pattern.length; l++) pattern[l] = DOT_O;
-            pattern[i] = DOT_EMPTY;
-            if (findNextPattern(0, 0, pattern)) {
-                map[iFind + iDirectFind * i][jFind + jDirectFind * i] = DOT_O;
-                System.out.println("Обнаружена победа кординанаты (" + (iFind + iDirectFind * i + 1) + ", " + (jFind + jDirectFind * i + 1) + ")");
-                System.out.println("Компьютер походил в точку (" + (iFind + iDirectFind * i + 1) + ", " + (jFind + jDirectFind * i + 1) + ")");
-                return true;
-            }
-        }
-        return false;
-    }
+    public static boolean findTurn(char symb, int lengthOfPattern) {
+//        char[] fullPatter = new char[DOTS_TO_WIN];
+//        for (int i = 0; i < DOTS_TO_WIN; i++) fullPatter[i] = DOT_EMPTY;
 
-    public static boolean blockHumanWin() {
-        char[] pattern = new char[DOTS_TO_WIN];
-        for (int i = 0; i < pattern.length; i++) {//формируем все возможные предпобедные паттерны
-            for (int l = 0; l < pattern.length; l++) pattern[l] = DOT_X;
+        char[] pattern = new char[lengthOfPattern];
+        for (int i = 0; i < pattern.length; i++) {
+            for (int l = 0; l < pattern.length; l++) pattern[l] = symb;
             pattern[i] = DOT_EMPTY;
-            if (findNextPattern(0, 0, pattern)) {
-                map[iFind + iDirectFind * i][jFind + jDirectFind * i] = DOT_O;
-                System.out.println("Заблокирована победа кординанаты (" + (iFind + iDirectFind * i + 1) + ", " + (jFind + jDirectFind * i + 1) + ")");
-                System.out.println("Компьютер походил в точку (" + (iFind + iDirectFind * i + 1) + ", " + (jFind + jDirectFind * i + 1) + ")");
-                return true;
+
+//            for (int fullPatternOffset = 0; fullPatternOffset < DOTS_TO_WIN - lengthOfPattern; fullPatternOffset++) {
+
+//                for (int l = 0; l < pattern.length; l++) fullPatter[l + fullPatternOffset] = pattern[l];
+
+                if (findNextPattern(0, 0, pattern/*fullPattern*/)) {
+                    map[iFind + iDirectFind * i][jFind + jDirectFind * i] = DOT_O;
+                    System.out.println("Компьютер походил в точку (" + (iFind + iDirectFind * i + 1) + ", " + (jFind + jDirectFind * i + 1) + ")");
+                    return true;
+                }
             }
-        }
+//        }
         return false;
     }
 
