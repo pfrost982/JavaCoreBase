@@ -1,5 +1,6 @@
 package lesson4;
 
+import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
@@ -81,27 +82,22 @@ public class MainClass {
         do {
             i = getInt("Введите строку: ") - 1;
             j = getInt("Введите столбец: ") - 1;
+            if (!isCellValid(i, j)) System.out.println("Координаты некорректны, введите еще раз");
         } while (!isCellValid(i, j));
         map[i][j] = DOT_X;
     }
 
     public static int getInt(String s) {
-        int result = SIZE + 1;
-        do {
+        String input;
+        while (true) {
+            System.out.print(s);
+            input = sc.nextLine();
             try {
-                System.out.println(s);
-                int value = sc.nextInt();
-                if (value < 1 | value > SIZE) {
-                    System.out.println("Число вне диапазона, введите еще раз");
-                    continue;
-                }
-                result = value;
+                return Integer.parseInt(input);
             } catch (NumberFormatException e) {
                 System.out.println("Это не число, введите еще раз");
             }
-        } while (result == SIZE + 1);
-        return result;
-
+        }
     }
 
     public static boolean isCellValid(int i, int j) {
@@ -123,7 +119,7 @@ public class MainClass {
             pattern[i] = DOT_EMPTY;
             if (findNextPattern(0, 0, pattern)) {
                 map[iFind + iDirectFind * i][jFind + jDirectFind * i] = DOT_O;
-                System.out.println("обнаружена победа кординанаты (" + (iFind + iDirectFind * i + 1) + ", " + (jFind + jDirectFind * i + 1) + ")");
+                System.out.println("Обнаружена победа кординанаты (" + (iFind + iDirectFind * i + 1) + ", " + (jFind + jDirectFind * i + 1) + ")");
                 System.out.println("Компьютер походил в точку (" + (iFind + iDirectFind * i + 1) + ", " + (jFind + jDirectFind * i + 1) + ")");
                 return true;
             }
@@ -138,7 +134,7 @@ public class MainClass {
             pattern[i] = DOT_EMPTY;
             if (findNextPattern(0, 0, pattern)) {
                 map[iFind + iDirectFind * i][jFind + jDirectFind * i] = DOT_O;
-                System.out.println("заблокирована победа кординанаты (" + (iFind + iDirectFind * i + 1) + ", " + (jFind + jDirectFind * i + 1) + ")");
+                System.out.println("Заблокирована победа кординанаты (" + (iFind + iDirectFind * i + 1) + ", " + (jFind + jDirectFind * i + 1) + ")");
                 System.out.println("Компьютер походил в точку (" + (iFind + iDirectFind * i + 1) + ", " + (jFind + jDirectFind * i + 1) + ")");
                 return true;
             }
