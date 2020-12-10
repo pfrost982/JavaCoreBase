@@ -112,30 +112,31 @@ public class MainClass {
             if (findTurn(DOT_O, length)) return;
             if (findTurn(DOT_X, length)) return;
         }
-        System.out.println("Неведомая хуйня");
+        System.out.println("Случайный ход");
         randomTurn();
     }
 
     public static boolean findTurn(char symb, int lengthOfPattern) {
-//        char[] fullPatter = new char[DOTS_TO_WIN];
-//        for (int i = 0; i < DOTS_TO_WIN; i++) fullPatter[i] = DOT_EMPTY;
+        char[] fullPattern = new char[DOTS_TO_WIN];
 
         char[] pattern = new char[lengthOfPattern];
         for (int i = 0; i < pattern.length; i++) {
             for (int l = 0; l < pattern.length; l++) pattern[l] = symb;
             pattern[i] = DOT_EMPTY;
 
-//            for (int fullPatternOffset = 0; fullPatternOffset < DOTS_TO_WIN - lengthOfPattern; fullPatternOffset++) {
+            for (int fullPatternOffset = 0; fullPatternOffset <= DOTS_TO_WIN - lengthOfPattern; fullPatternOffset++) {
 
-//                for (int l = 0; l < pattern.length; l++) fullPatter[l + fullPatternOffset] = pattern[l];
-
-                if (findNextPattern(0, 0, pattern/*fullPattern*/)) {
+                for (int l = 0; l < DOTS_TO_WIN; l++) fullPattern[l] = DOT_EMPTY;
+                for (int l = 0; l < pattern.length; l++) fullPattern[l + fullPatternOffset] = pattern[l];
+//                System.out.println(Arrays.toString(fullPattern));
+//                System.out.println();
+                if (findNextPattern(0, 0, fullPattern)) {
                     map[iFind + iDirectFind * i][jFind + jDirectFind * i] = DOT_O;
                     System.out.println("Компьютер походил в точку (" + (iFind + iDirectFind * i + 1) + ", " + (jFind + jDirectFind * i + 1) + ")");
                     return true;
                 }
             }
-//        }
+        }
         return false;
     }
 
