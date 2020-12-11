@@ -130,8 +130,8 @@ public class MainClass {
                 for (int l = 0; l < pattern.length; l++) fullPattern[l + fullPatternOffset] = pattern[l];
 //                System.out.println(Arrays.toString(fullPattern)); //просмотр построенных паттернов
                 if (findNextPattern(0, 0, fullPattern)) {
-                    map[iFind + iDirectFind * i][jFind + jDirectFind * i] = DOT_O;
-                    System.out.println("Компьютер походил в точку (" + (iFind + iDirectFind * i + 1) + ", " + (jFind + jDirectFind * i + 1) + ")");
+                    map[iFind + iDirectFind * (i + fullPatternOffset)][jFind + jDirectFind * (i + fullPatternOffset)] = DOT_O;
+                    System.out.println("Компьютер походил в точку (" + (iFind + iDirectFind * (i + fullPatternOffset) + 1) + ", " + (jFind + jDirectFind * (i + fullPatternOffset) + 1) + ")");
                     return true;
                 }
             }
