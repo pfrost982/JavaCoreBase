@@ -16,14 +16,23 @@ public class Animal {
     }
     @Override
     public String toString() {
-        String info = name + ", Бег: " + maxRunDistance + "м";
-        if (maxSwimDistance > 0) {
-            info = info + ", Плаванье: " + maxSwimDistance + "м, Прыжок: " + String.format("%.2f", maxJumpHeight) + "м";
+        String info = name + ",";
+        if (maxRunDistance > 0) {
+            info = info + " Бег: " + maxRunDistance + "м,";
         } else {
-            info = info + ", не умеет плавать, Прыжок: " + String.format("%.2f", maxJumpHeight) + "м";
+            info = info + " не умеет бегать,";
         }
-        return  info;/*name + ", Бег: " + maxRunDistance + "м, Плаванье: " + maxSwimDistance +
-                "м, Прыжок: " + String.format("%.2f", maxJumpHeight) + "м";*/
+        if (maxSwimDistance > 0) {
+            info = info + " Плаванье: " + maxSwimDistance + "м,";
+        } else {
+            info = info + " не умеет плавать,";
+        }
+        if (maxJumpHeight > 0) {
+            info = info + " Прыжок: " + String.format("%.2f", maxJumpHeight) + "м";
+        } else {
+            info = info + " не умеет прыгать";
+        }
+        return  info;
     }
     public boolean run(int distance) {
         if (distance <= maxRunDistance) {
