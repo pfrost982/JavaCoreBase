@@ -1,0 +1,59 @@
+Index: src/lesson4/MainClass.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package lesson4;\r\n\r\nimport java.sql.SQLOutput;\r\nimport java.util.Arrays;\r\nimport java.util.Random;\r\nimport java.util.Scanner;\r\npublic class MainClass {\r\n    public static int SIZE = 5;\r\n    public static int DOTS_TO_WIN = 3;\r\n    public static final char DOT_EMPTY = '•';\r\n    public static final char DOT_X = 'X';\r\n    public static final char DOT_O = 'O';\r\n    public static char[][] map;\r\n\r\n    //переменные для findNextPattern()\r\n    public static int iFind = 0, jFind = 0;\r\n    public static int iDirectFind, jDirectFind;\r\n\r\n    public static int numOfTurnsAI = 0;\r\n    public static int numOfTurnsHuman = 0;\r\n    public static Scanner sc = new Scanner(System.in);\r\n    public static Random rand = new Random();\r\n    public static void main(String[] args) {\r\n        SIZE = getInt(\"Введите размер поля: \");\r\n        DOTS_TO_WIN = getInt(\"Введите количество символов для победы: \");\r\n        initMap();\r\n        printMap();\r\n        while (true) {\r\n            humanTurn();\r\n            numOfTurnsHuman++;\r\n            printMap();\r\n            if (checkWin(DOT_X)) {\r\n                System.out.println(\"Победил человек\");\r\n                break;\r\n            }\r\n            if (isMapFull()) {\r\n                System.out.println(\"Ничья\");\r\n                break;\r\n            }\r\n            aiTurn();\r\n            numOfTurnsAI++;\r\n            printMap();\r\n            if (checkWin(DOT_O)) {\r\n                System.out.println(\"Победил Искуственный Интеллект\");\r\n                break;\r\n            }\r\n            if (isMapFull()) {\r\n                System.out.println(\"Ничья\");\r\n                break;\r\n            }\r\n        }\r\n        System.out.println(\"Игра закончена\");\r\n    }\r\n\r\n    public static void initMap() {\r\n        map = new char[SIZE][SIZE];\r\n        for (int i = 0; i < SIZE; i++) {\r\n            for (int j = 0; j < SIZE; j++) {\r\n                map[i][j] = DOT_EMPTY;\r\n            }\r\n        }\r\n    }\r\n\r\n    public static void printMap() {\r\n        System.out.print(\"☺ \");\r\n        for (int i = 1; i <= SIZE; i++) {\r\n            System.out.print(i + \" \");\r\n        }\r\n        System.out.println();\r\n        for (int i = 0; i < SIZE; i++) {\r\n            System.out.print((i + 1) + \" \");\r\n            for (int j = 0; j < SIZE; j++) {\r\n                System.out.print(map[i][j] + \" \");\r\n            }\r\n            System.out.println();\r\n        }\r\n        System.out.println();\r\n    }\r\n\r\n    public static void humanTurn() {\r\n        int i, j;\r\n        do {\r\n            i = getInt(\"Введите строку: \") - 1;\r\n            j = getInt(\"Введите столбец: \") - 1;\r\n            if (!isCellValid(i, j)) System.out.println(\"Координаты некорректны, введите еще раз\");\r\n        } while (!isCellValid(i, j));\r\n        map[i][j] = DOT_X;\r\n    }\r\n\r\n    public static int getInt(String s) {\r\n        String input;\r\n        while (true) {\r\n            System.out.print(s);\r\n            input = sc.nextLine();\r\n            try {\r\n                return Integer.parseInt(input);\r\n            } catch (NumberFormatException e) {\r\n                System.out.println(\"Это не число, введите еще раз\");\r\n            }\r\n        }\r\n    }\r\n\r\n    public static boolean isCellValid(int i, int j) {\r\n        if (i < 0 || i >= SIZE || j < 0 || j >= SIZE) return false;\r\n        if (map[i][j] == DOT_EMPTY) return true;\r\n        return false;\r\n    }\r\n\r\n    public static void aiTurn() {\r\n\r\n        for (int length = DOTS_TO_WIN; length >=0 ; length--) {\r\n            if (findTurn(DOT_O, length)) return;\r\n            if (findTurn(DOT_X, length)) return;\r\n        }\r\n        System.out.println(\"Неведомая хуйня\");\r\n        randomTurn();\r\n    }\r\n\r\n    public static boolean findTurn(char symb, int lengthOfPattern) {\r\n//        char[] fullPatter = new char[DOTS_TO_WIN];\r\n//        for (int i = 0; i < DOTS_TO_WIN; i++) fullPatter[i] = DOT_EMPTY;\r\n\r\n        char[] pattern = new char[lengthOfPattern];\r\n        for (int i = 0; i < pattern.length; i++) {\r\n            for (int l = 0; l < pattern.length; l++) pattern[l] = symb;\r\n            pattern[i] = DOT_EMPTY;\r\n\r\n//            for (int fullPatternOffset = 0; fullPatternOffset < DOTS_TO_WIN - lengthOfPattern; fullPatternOffset++) {\r\n\r\n//                for (int l = 0; l < pattern.length; l++) fullPatter[l + fullPatternOffset] = pattern[l];\r\n\r\n                if (findNextPattern(0, 0, pattern/*fullPattern*/)) {\r\n                    map[iFind + iDirectFind * i][jFind + jDirectFind * i] = DOT_O;\r\n                    System.out.println(\"Компьютер походил в точку (\" + (iFind + iDirectFind * i + 1) + \", \" + (jFind + jDirectFind * i + 1) + \")\");\r\n                    return true;\r\n                }\r\n            }\r\n//        }\r\n        return false;\r\n    }\r\n\r\n    public static void randomTurn() {\r\n        int i, j;\r\n        do {\r\n            i = rand.nextInt(SIZE);\r\n            j = rand.nextInt(SIZE);\r\n        } while (!isCellValid(i, j));\r\n        map[i][j] = DOT_O;\r\n        System.out.println(\"Компьютер походил в точку (\" + (i + 1) + \", \" + (j + 1) + \")\");\r\n    }\r\n    public static boolean isMapFull() {\r\n        if ((numOfTurnsHuman + numOfTurnsAI) >= (SIZE * SIZE)) return true;\r\n        else return false;\r\n    }\r\n    public static boolean checkWin(char symb) {\r\n        char[] pattern = new char[DOTS_TO_WIN];\r\n        for (int i = 0; i < pattern.length; i++) pattern[i] = symb; //формируем победный паттерн\r\n        if (findNextPattern(0, 0, pattern)) return true;\r\n        else return false;\r\n    }\r\n\r\n    public static boolean findNextPattern(int iStart, int jStart, char[] pattern) {\r\n        // ищет следующую строку pattern в матрице поля начиная с позиции iStart, jStart(предусмотрено на будующее чтобы продолжать поиск)\r\n        // если находит возвращает true начало цепочки будет в позиции iFind, jFind направление в iDirectFind и jDirectFind\r\n        int i = iStart;\r\n        int j = jStart;\r\n        int[][] directions = { {-1, 1}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};//8 направлений\r\n        for (; i < SIZE; i++) {\r\n            if (j >= SIZE) j = 0;\r\n            for (; j < SIZE; j++) {\r\n                int iDirect, jDirect;\r\n                for (int d = 0; d < 8; d++) {\r\n                    iDirect = directions[d][0];\r\n                    jDirect = directions[d][1];\r\n                    if (patternDirectCompare(i, j, iDirect, jDirect, pattern)) {\r\n/*для отладки*/         System.out.println(\"найдена цепочка \" + Arrays.toString(pattern) + \" в точке (\" + (i + 1) + \", \" + (j + 1) + \")  направление \" + iDirect + \", \" + jDirect);\r\n                        iDirectFind = iDirect;\r\n                        jDirectFind = jDirect;\r\n                        iFind = i;\r\n                        jFind = j;\r\n                        return true;\r\n                    }\r\n                }\r\n            }\r\n        }\r\n        return false;\r\n    }\r\n\r\n    public static boolean patternDirectCompare(int i, int j, int iDirect, int jDirect, char[] pattern) {\r\n        //сравнивает переданный pattern с цепочкой символов в матрице поля, начинающейся с позиции i, j в направлении iDirect, jDirect\r\n        //в случае совпадения возвращает true\r\n        boolean DotValid;\r\n        for (int k = 0; k < pattern.length; k++) {\r\n\r\n            DotValid = i >= 0 & i < SIZE & j >= 0 & j < SIZE;\r\n\r\n            if (DotValid)\r\n                DotValid &= map[i][j] == pattern[k];\r\n            else return false;\r\n\r\n            if(DotValid) {\r\n                i += iDirect;\r\n                j += jDirect;\r\n            } else return false;\r\n        }\r\n        return true;\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/lesson4/MainClass.java b/src/lesson4/MainClass.java
+--- a/src/lesson4/MainClass.java	(revision b1df1926fae23a5be3d72fb7b8d7f66e4ea5e59d)
++++ b/src/lesson4/MainClass.java	(date 1607620331235)
+@@ -109,6 +109,7 @@
+     public static void aiTurn() {
+ 
+         for (int length = DOTS_TO_WIN; length >=0 ; length--) {
++
+             if (findTurn(DOT_O, length)) return;
+             if (findTurn(DOT_X, length)) return;
+         }
+@@ -123,19 +124,17 @@
+         char[] pattern = new char[lengthOfPattern];
+         for (int i = 0; i < pattern.length; i++) {
+             for (int l = 0; l < pattern.length; l++) pattern[l] = symb;
+-            pattern[i] = DOT_EMPTY;
++                pattern[i] = DOT_EMPTY;
+ 
+-//            for (int fullPatternOffset = 0; fullPatternOffset < DOTS_TO_WIN - lengthOfPattern; fullPatternOffset++) {
+-
+-//                for (int l = 0; l < pattern.length; l++) fullPatter[l + fullPatternOffset] = pattern[l];
++//                for (int fullPatternOffset = 0; fullPatternOffset < DOTS_TO_WIN - lengthOfPattern; fullPatternOffset++) {
++//                    for (int l = 0; l < pattern.length; l++) fullPatter[l + fullPatternOffset] = pattern[l];
+ 
+                 if (findNextPattern(0, 0, pattern/*fullPattern*/)) {
+                     map[iFind + iDirectFind * i][jFind + jDirectFind * i] = DOT_O;
+                     System.out.println("Компьютер походил в точку (" + (iFind + iDirectFind * i + 1) + ", " + (jFind + jDirectFind * i + 1) + ")");
+                     return true;
+                 }
+-            }
+-//        }
++        }
+         return false;
+     }
+ 
+Index: src/lesson5/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/lesson5/Main.java b/src/lesson5/Main.java
+new file mode 100644
+--- /dev/null	(date 1607619798325)
++++ b/src/lesson5/Main.java	(date 1607619798325)
+@@ -0,0 +1,7 @@
++package lesson5;
++
++public class Main {
++    public static void main(String[] args) {
++
++    }
++}
