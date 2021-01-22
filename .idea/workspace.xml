@@ -20,22 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="418ab98a-ef72-428e-b3a9-cf59324fae0b" name="Default Changelist" comment="первая домашняя работа">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_12_2020_0_12_[Default_Changelist]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_12_2020_0_12__Default_Changelist_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_12_12_2020_21_37_[Default_Changelist]1/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_12_12_2020_21_37__Default_Changelist_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_12_12_2020_22_34_[Default_Changelist]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_12_12_2020_22_34__Default_Changelist_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_13_12_2020_1_47_[Default_Changelist]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_13_12_2020_1_47__Default_Changelist_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaCoreBase/lesson6/Animal.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCoreBase/lesson6/Animal.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaCoreBase/lesson6/Cat.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCoreBase/lesson6/Cat.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaCoreBase/lesson6/Dog.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCoreBase/lesson6/Dog.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lesson6/Animal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/lesson6/Animal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lesson6/Cat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/lesson6/Cat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lesson6/Dog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/lesson6/Dog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/Test.java" beforeDir="false" />
     </list>
     <list id="e26eb066-4949-46c0-b2c5-9f3209949968" name="getTry" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -121,10 +106,10 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.Main (1)" />
-      <item itemvalue="Application.Main (2)" />
       <item itemvalue="Application.Main" />
+      <item itemvalue="Application.Main (1)" />
       <item itemvalue="Application.Test" />
+      <item itemvalue="Application.Main (2)" />
     </list>
     <recent_temporary>
       <list>
