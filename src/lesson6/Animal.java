@@ -1,6 +1,6 @@
 package lesson6;
 
-public class Animal {
+class Animal {
     private static int animalCount = 0;
     private String name;
     private int maxRunDistance;

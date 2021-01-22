@@ -1,6 +1,6 @@
 package lesson6;
 
-public class Cat extends Animal{
+class Cat extends Animal{
     private static int catCount = 0;
     public Cat(String name, int maxRunDistance,  double maxJumpHeight) {
         super(name, maxRunDistance, 0, maxJumpHeight);

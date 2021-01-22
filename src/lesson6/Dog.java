@@ -1,6 +1,6 @@
 package lesson6;
 
-public class Dog extends Animal{
+class Dog extends Animal{
     private static int dogCount = 0;
     public Dog(String name, int maxRunDistance, int maxSwimDistance, double maxJumpHeight) {
         super(name, maxRunDistance, maxSwimDistance, maxJumpHeight);
